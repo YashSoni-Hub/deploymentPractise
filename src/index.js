@@ -1,14 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider as ReduxProvider } from "react-redux";
+import { persistor, STORE } from "./store.js";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider as AlertProvider, positions, transitions } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const options = {
+  position: positions.BOTTOM_CENTER,
+  timeout: 5000,
+  transition: transitions.SCALE,
+};
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <ReduxProvider store={STORE}>
+    <PersistGate loading={null} persistor={persistor}>
+      <AlertProvider template={AlertTemplate} {...options}>
+        <App />
+      </AlertProvider>
+    </PersistGate>
+  </ReduxProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
